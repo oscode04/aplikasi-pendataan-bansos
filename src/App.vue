@@ -29,7 +29,6 @@
           <v-container>
             <v-row>
               <v-col
-                
                 md="12"
               >
               <v-text-field
@@ -44,7 +43,6 @@
           </v-container>
         </v-form>
       </v-card>
-
     </v-container>
 
     <!-- field nik -->
@@ -77,7 +75,6 @@
           </v-container>
         </v-form>
       </v-card>
-
     </v-container>
 
     <!-- field nomor kk -->
@@ -110,7 +107,6 @@
           </v-container>
         </v-form>
       </v-card>
-
     </v-container>
     
     <!-- upload KTP -->
@@ -130,20 +126,23 @@
             <v-row>
               <v-col
                 md="12"
+                
               >
              <v-file-input
+             v-model="uploadKtp"
                 :rules="rules"
-                accept="image/png, image/jpeg, image/bmp"
-                placeholder="Pick an avatar"
+                label="File input"
+                filled
+                type="file"
+                ref="ktp"
+                name="ktp"
                 prepend-icon="mdi-camera"
-                label="Masukan foto KTP"
               ></v-file-input>
               </v-col>
             </v-row>
           </v-container>
         </v-form>
       </v-card>
-
     </v-container>
 
     <!-- Upload KK -->
@@ -165,21 +164,20 @@
                 md="12"
               >
              <v-file-input
+             v-model="uploadKk"
                 :rules="rules"
-                accept="image/png, image/jpeg, image/bmp"
-                placeholder="Pick an avatar"
+                label="File input"
+                filled
                 prepend-icon="mdi-camera"
-                label="Masukan foto KK"
               ></v-file-input>
               </v-col>
             </v-row>
           </v-container>
         </v-form>
       </v-card>
-
     </v-container>
 
-
+    
     <!-- field Umur -->
     <v-container>
       <v-card
@@ -235,9 +233,9 @@
               <v-col
                 md="12"
               >
-              <h3>{{ radios || 'null' }}</h3>
+              <h3>{{ jenisKelamin || 'null' }}</h3>
                 <v-radio-group
-                  v-model="radios"
+                  v-model="jenisKelamin"
                   mandatory
                 >
                   <v-radio
@@ -343,7 +341,7 @@
               >
               <v-text-field
                   class="mt-n6"
-                  v-model="penghasilansbl"
+                  v-model="penghasilansudah"
                   :rules="penghasilanRules"
                   label="Masukan pengahasilan disini"
                   required
@@ -353,9 +351,14 @@
           </v-container>
         </v-form>
       </v-card>
-
     </v-container>
 
+    <!-- tombol submit -->
+    <v-container>
+      <div class="text-center mb-5">
+          <v-btn rounded color="primary accent-3" dark @click="submit"  width="80%" height="50"> <h1>Submit</h1> </v-btn>
+      </div>
+    </v-container>
     </v-main>
   </v-app>
 </template>
@@ -364,14 +367,18 @@
 
 export default {
   name: 'App',
-   data: () => ({
+   data () {
+     return {
       valid: false,
       name: '',
       nik: '',
       kk: '',
+      uploadKtp:null,
+      uploadKk:null,
       umur:'',
       alamat:'',
-      radios: null,
+      jenisKelamin: null,
+      penghasilansudah:'',
       penghasilansbl:'',
       nameRules: [
         v => !!v || 'nama wajib di tulis',
@@ -394,7 +401,55 @@ export default {
       rules: [
         value => !value || value.size < 2000000 || 'ukuran foto tidak boleh lebih dari 2 MB!',
       ],
-    }),
+     }
+      
+    },
+    methods: {
+      submit() {
+          const timeout = Math.floor(Math.random() * 1500) + 1 
+
+          if (timeout > 1500) {
+            //error
+          } else {
+            //axios post or 200
+          }
+          // let formData = new FormData()
+          // formData.append('name', this.name)
+          // formData.append('nik', this.nik)
+          // formData.append('ktp', file)
+          // let config = {
+          //     nama : this.name,
+          //     nik : this.nik,
+          //     kk : this.kk,
+          //     uploadKk : this.uploadKk,
+          //     umur : this.umur,
+          //     alamat : this.alamat,
+          //     jenisKelamin : this.jenisKelamin,
+          //     penghasilansudah : this.penghasilansudah,
+          //     penghasilansbl : this.penghasilansbl,
+          // };
+
+          let config = {
+            data : {
+              'Nama' : this.name,
+              'Nomor NIK' : this.nik,
+              'Nomor KK' : this.kk,
+              'Foto KTP' : this.uploadKtp,
+              'Foto KK' : this.uploadKk,
+              'Umur' : this.umur,
+              'Alamat' : this.alamat,
+              'Jenis Kelalmin' : this.jenisKelamin,
+              'Penghasilan sebelum pandemi' : this.penghasilansbl,
+              'Penghasilan sesudah pandemi' : this.penghasilansudah
+            }
+          }
+          console.log(config)
+      },
+      uploadFile(event) {
+        let file = event.target.files[0].name
+        return file
+      }
+    }
 };
 
 </script>

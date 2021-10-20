@@ -41,12 +41,12 @@ export default {
     data: () => ({
       valid: false,
       isi: '',
-      // nameRules: [
-      //   v => !!v || 'Name is required',
-      // ],
-      // inirules: [
-      //   v => !!v || 'this.rules',
-      // ],
+      nameRules: [
+        v => !!v || 'Name is required',
+      ],
+      inirules: [
+        v => !!v || 'this.rules',
+      ],
     }),
     props : [
       'nama',
